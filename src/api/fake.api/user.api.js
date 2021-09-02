@@ -200,14 +200,6 @@ const users = [
         completedMeetings: 36,
         rate: 2.5,
     },
-    {
-        _id: "67rdca3eeb71212f6fgeed471815",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5,
-    },
 ];
 export function fetchAll() {
     return users;

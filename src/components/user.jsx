@@ -1,95 +1,43 @@
-import React, { useState } from "react";
+import React from "react";
 import "bootstrap/dist/css/bootstrap.css";
-import api from "../api";
+// import api from "../api";
+import Bookmark from "./bookmark";
+import Qualitie from "./qualitie";
 
-const Users = () => {
-    const [users, setUsers] = useState(api.users.fetchAll());
-
-    const renderPhrase = (number, titles) => {
-        let cases = [2, 0, 1, 1, 1, 2];
-        return titles[
-            number % 100 > 4 && number % 100 < 20
-                ? 2
-                : cases[number % 10 < 5 ? number % 10 : 5]
-        ];
-    };
-
-    const handleDelete = (itemId) => {
-        setUsers(users.filter((userItem) => userItem._id !== itemId));
-    };
-
-    const colorOfPeoplesForCompany = users.length > 0 ? "primary" : "danger";
-    const howMuchPeople = (array) => {
-        if (array.length > 0) {
-            return `${array.length} человек ${" "}
-                    ${renderPhrase(array.length, [
-                        "тусанет",
-                        "тусанут",
-                        "тусанут",
-                    ])}${" "}
-                    c тобой сегодня`;
-        } else {
-            return `Никто с тобой сегодня не тусанет`;
-        }
-    };
-
-    function renderUsers(usersArray) {
-        return (
-            <tbody>
-                {users.map((user) => {
-                    return (
-                        <tr key={user._id}>
-                            <td>{user.name}</td>
-                            <td>
-                                {user.qualities.map((q) => (
-                                    <span
-                                        className={`badge m-2 bg-${q.color}`}
-                                        key={q._id}
-                                    >
-                                        {q.name}
-                                    </span>
-                                ))}
-                            </td>
-                            <td>{user.profession.name}</td>
-                            <td>{user.completedMeetings}</td>
-                            <td>{user.rate}</td>
-                            <td>
-                                <button
-                                    onClick={() => handleDelete(user._id)}
-                                    className={`badge bg-danger`}
-                                >
-                                    delete
-                                </button>
-                            </td>
-                        </tr>
-                    );
-                })}
-            </tbody>
-        );
-    }
-
+const User = ({
+    _id,
+    name,
+    qualities,
+    completedMeetings,
+    rate,
+    profession,
+    onDelete,
+    toggleBookmark2,
+    ...user
+}) => {
     return (
-        <>
-            <h1>
-                <span className={`badge m-2 bg-${colorOfPeoplesForCompany}`}>
-                    {howMuchPeople(users)}
-                </span>
-            </h1>
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Качества</th>
-                        <th scope="col">Профессия</th>
-                        <th scope="col">Встретился,раз</th>
-                        <th scope="col">Оценка</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                {renderUsers(users)}
-            </table>
-        </>
+        <tr id={_id}>
+            <td>{name}</td>
+            <td>
+                <Qualitie qualities={qualities} />
+            </td>
+            <td>{profession.name}</td>
+            <td>{completedMeetings}</td>
+            <td>{rate}</td>
+            <td>
+                <Bookmark toggleBookmark3={toggleBookmark2} userId={_id} />
+                {/*  */}
+            </td>
+            <td>
+                <button
+                    className={`badge bg-danger`}
+                    onClick={() => onDelete(_id)}
+                >
+                    delete
+                </button>
+            </td>
+        </tr>
     );
 };
 
-export default Users;
+export default User;
