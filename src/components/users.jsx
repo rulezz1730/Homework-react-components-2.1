@@ -22,8 +22,8 @@ const Users = ({ onDelete, arrayUsers, toggleBookmark, ...rest }) => {
                         <User
                             key={user._id}
                             onDelete={onDelete}
-                            {...user}
                             toggleBookmark2={toggleBookmark}
+                            {...user}
                         />
                     ))}
                 </tbody>

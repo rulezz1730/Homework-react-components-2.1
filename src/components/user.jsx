@@ -25,7 +25,11 @@ const User = ({
             <td>{completedMeetings}</td>
             <td>{rate}</td>
             <td>
-                <Bookmark toggleBookmark3={toggleBookmark2} userId={_id} />
+                <Bookmark
+                    toggleBookmark3={toggleBookmark2}
+                    userId={_id}
+                    status={user.status}
+                />
                 {/*  */}
             </td>
             <td>

@@ -31,19 +31,25 @@ function App() {
 
     const handleDelete = (itemId) => {
         setUsers(users.filter((userItem) => userItem._id !== itemId));
-        console.log("item ID ", itemId);
+        // console.log("item ID ", itemId);
     };
 
-    const handleToggleBookMark = (e, itemId) => {
+    const handleToggleBookMark = (itemId) => {
         console.log(itemId);
-        const { target } = e;
-        if (target.classList.contains("bi", "bi-bookmark")) {
-            target.classList.toggle("bi-bookmark");
-            target.classList.add("bi-bookmark-fill");
-        } else {
-            target.classList.toggle("bi-bookmark-fill");
-            target.classList.add("bi-bookmark");
-        }
+        const newUsers = users.map((user) => {
+            if (user._id === itemId) {
+                user.status = !user.status;
+            }
+            return user;
+        });
+        // const newUsers = users.map((user) => {
+        //     if (user._id === itemId) {
+        //         user.status = !user.status;
+        //         return user;
+        //     }
+        // });
+        console.log(newUsers);
+        setUsers(newUsers);
     };
 
     return (

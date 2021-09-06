@@ -1,11 +1,12 @@
 import React from "react";
 
-const Bookmark = ({ userId, status, toggleBookmark3, ...rest }) => {
+const Bookmark = ({ userId, status, toggleBookmark3 }) => {
+    console.log(status);
     return (
         <>
             <button
-                onClick={(e) => toggleBookmark3(e, userId)}
-                className="bi bi-bookmark"
+                onClick={() => toggleBookmark3(userId)}
+                className={"bi bi-bookmark" + (status ? "-fill" : "")}
             ></button>
         </>
     );
