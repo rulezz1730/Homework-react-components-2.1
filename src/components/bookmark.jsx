@@ -1,7 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Bookmark = ({ userId, status, toggleBookmark3 }) => {
-    console.log(status);
     return (
         <>
             <button
@@ -13,3 +13,9 @@ const Bookmark = ({ userId, status, toggleBookmark3 }) => {
 };
 
 export default Bookmark;
+
+Bookmark.propTypes = {
+    userId: PropTypes.string.isRequired,
+    status: PropTypes.bool,
+    toggleBookmark3: PropTypes.func.isRequired
+};

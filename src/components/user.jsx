@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.css";
 // import api from "../api";
 import Bookmark from "./bookmark";
 import Qualitie from "./qualitie";
+import PropTypes from "prop-types";
 
 const User = ({
     _id,
@@ -42,6 +43,17 @@ const User = ({
             </td>
         </tr>
     );
+};
+
+User.propTypes = {
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    qualities: PropTypes.array.isRequired,
+    completedMeetings: PropTypes.number.isRequired,
+    rate: PropTypes.number.isRequired,
+    profession: PropTypes.object.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    toggleBookmark2: PropTypes.func.isRequired
 };
 
 export default User;

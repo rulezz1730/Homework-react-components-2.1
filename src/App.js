@@ -9,7 +9,7 @@ function App() {
 
     const totalPeople = (array) => {
         const renderPhrase = (number, titles) => {
-            let cases = [2, 0, 1, 1, 1, 2];
+            const cases = [2, 0, 1, 1, 1, 2];
             return titles[
                 number % 100 > 4 && number % 100 < 20
                     ? 2
@@ -17,12 +17,13 @@ function App() {
             ];
         };
         if (array.length > 0) {
-            return `${array.length} человек ${" "}
+            return `${array.length} человек 
                     ${renderPhrase(array.length, [
                         "тусанет",
                         "тусанут",
-                        "тусанут",
-                    ])}${" "}
+                        "тусанут"
+                        // eslint-disable-next-line indent
+                    ])}
                     c тобой сегодня`;
         } else {
             return `Никто с тобой сегодня не тусанет`;
@@ -31,24 +32,15 @@ function App() {
 
     const handleDelete = (itemId) => {
         setUsers(users.filter((userItem) => userItem._id !== itemId));
-        // console.log("item ID ", itemId);
     };
 
     const handleToggleBookMark = (itemId) => {
-        console.log(itemId);
         const newUsers = users.map((user) => {
             if (user._id === itemId) {
                 user.status = !user.status;
             }
             return user;
         });
-        // const newUsers = users.map((user) => {
-        //     if (user._id === itemId) {
-        //         user.status = !user.status;
-        //         return user;
-        //     }
-        // });
-        console.log(newUsers);
         setUsers(newUsers);
     };
 
@@ -60,7 +52,7 @@ function App() {
             ></SearchStatus>
             <Users
                 onDelete={handleDelete}
-                arrayUsers={users}
+                users={users}
                 toggleBookmark={handleToggleBookMark}
             />
         </>

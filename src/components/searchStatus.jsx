@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const SearchStatus = ({ numberOfPeople, ...users }) => {
     const colorOfPeoplesForCompany = users.length > 0 ? "primary" : "danger";
@@ -10,6 +11,10 @@ const SearchStatus = ({ numberOfPeople, ...users }) => {
             </span>
         </h1>
     );
+};
+
+SearchStatus.propTypes = {
+    numberOfPeople: PropTypes.string.isRequired
 };
 
 export default SearchStatus;
