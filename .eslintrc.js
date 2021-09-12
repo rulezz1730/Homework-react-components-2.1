@@ -4,7 +4,6 @@ module.exports = {
         es2021: true
     },
     extends: ["plugin:react/recommended", "standard"],
-    parser: "@typescript-eslint/parser",
     parserOptions: {
         ecmaFeatures: {
             jsx: true
@@ -12,19 +11,18 @@ module.exports = {
         ecmaVersion: 12,
         sourceType: "module"
     },
-    plugins: ["react", "@typescript-eslint"],
+    plugins: ["react"],
     rules: {
-        indent: [
-            "error",
-            4,
-            { ignoredNodes: ["TemplateLiteral"] },
-            { SwitchCase: "off" }
-        ],
+        indent: ["error", 4],
         semi: [2, "always"],
-        "space-before-function-paren": ["error", "never"],
+        "space-before-function-paren": [
+            "error",
+            { anonymous: "always", named: "never" }
+        ],
         quotes: ["error", "double", { allowTemplateLiterals: true }],
+        "multiline-ternary": ["error", "never"],
         "comma-dangle": ["error", "only-multiline"],
-        "no-use-before-define": "off",
-        "multiline-ternary": ["error", "never"]
+
+        "no-new": "error"
     }
 };

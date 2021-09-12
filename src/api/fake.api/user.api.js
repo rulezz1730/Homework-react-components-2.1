@@ -1,11 +1,5 @@
-const professions = {
-    doctor: { _id: "67rdca3eeb7f6fgeed471818", name: "Доктор" },
-    waiter: { _id: "67rdca3eeb7f6fgeed471820", name: "Официант" },
-    physics: { _id: "67rdca3eeb7f6fgeed471814", name: "Физик" },
-    engineer: { _id: "67rdca3eeb7f6fgeed471822", name: "Инженер" },
-    actor: { _id: "67rdca3eeb7f6fgeed471824", name: "Актер" },
-    cook: { _id: "67rdca3eeb7f6fgeed471829", name: "Повар" }
-};
+import { professionsObject as professions } from "./professions.api";
+
 const qualities = {
     tedious: {
         _id: "67rdca3eeb7f6fgeed471198",
@@ -135,72 +129,16 @@ const users = [
         qualities: [qualities.handsome],
         completedMeetings: 434,
         rate: 5
-    },
-    {
-        _id: "67rdca3eeb7f6fgeed4718113",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
-    },
-    {
-        _id: "67rdca3eeb7f6fgeed471215",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
-    },
-    {
-        _id: "67rdca3eeb7f6fgeed412321315",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
-    },
-    {
-        _id: "67rdca31212eeb7f6fgeed471815",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
-    },
-    {
-        _id: "67rdca121213eeb7f6fgeed471815",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
-    },
-    {
-        _id: "67rdca312211221eeb7f6fgeed471815",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
-    },
-    {
-        _id: "67rdca3eeb7f6fgeed4qwqw71815",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
-    },
-    {
-        _id: "67rdca3e1221eb7f6fgeed471815",
-        name: "Джон Дориан",
-        profession: professions.doctor,
-        qualities: [qualities.tedious, qualities.uncertain, qualities.strange],
-        completedMeetings: 36,
-        rate: 2.5
     }
 ];
-export function fetchAll() {
-    return users;
-}
+
+const fetchAll = () =>
+    new Promise((resolve) => {
+        window.setTimeout(function () {
+            resolve(users);
+        }, 2000);
+    });
+
+export default {
+    fetchAll
+};

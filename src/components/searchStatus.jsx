@@ -1,12 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const SearchStatus = ({ numberOfPeople, ...users }) => {
-    const colorOfPeoplesForCompany = users.length > 0 ? "primary" : "danger";
-
+const SearchStatus = ({ numberOfPeople, users }) => {
     return (
         <h1>
-            <span className={`badge m-2 bg-${colorOfPeoplesForCompany}`}>
+            <span
+                className={`badge m-2 bg-${
+                    users.length > 0 ? "primary" : "danger"
+                }`}
+            >
                 {numberOfPeople}
             </span>
         </h1>
@@ -14,7 +16,8 @@ const SearchStatus = ({ numberOfPeople, ...users }) => {
 };
 
 SearchStatus.propTypes = {
-    numberOfPeople: PropTypes.string.isRequired
+    numberOfPeople: PropTypes.string.isRequired,
+    users: PropTypes.array.isRequired
 };
 
 export default SearchStatus;

@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+/* eslint-disable indent */
+/* eslint-disable multiline-ternary */
+import React, { useState, useEffect } from "react";
 import Users from "./components/users";
-import SearchStatus from "./components/searchStatus";
 import api from "./api";
 
 function App() {
-    const initialState = api.users.fetchAll();
-    const [users, setUsers] = useState(initialState);
+    // const initialState = api.users.fetchAll();
+    // const [users, setUsers] = useState(initialState);
+    // const initialState = api.users.fetchAll();
+    const [users, setUsers] = useState();
 
-    const totalPeople = (array) => {
+    useEffect(() => {
+        console.log(`Запрос пользователей с сервера`);
+        api.users.fetchAll().then((data) => setUsers(data));
+    }, []);
+
+    const totalPeople = (count) => {
         const renderPhrase = (number, titles) => {
             const cases = [2, 0, 1, 1, 1, 2];
             return titles[
@@ -16,9 +24,9 @@ function App() {
                     : cases[number % 10 < 5 ? number % 10 : 5]
             ];
         };
-        if (array.length > 0) {
-            return `${array.length} человек 
-                    ${renderPhrase(array.length, [
+        if (count > 0) {
+            return `${count} человек 
+                    ${renderPhrase(count, [
                         "тусанет",
                         "тусанут",
                         "тусанут"
@@ -46,15 +54,14 @@ function App() {
 
     return (
         <>
-            <SearchStatus
-                numberOfPeople={totalPeople(users)}
-                {...users}
-            ></SearchStatus>
-            <Users
-                onDelete={handleDelete}
-                users={users}
-                toggleBookmark={handleToggleBookMark}
-            />
+            {users && (
+                <Users
+                    onDelete={handleDelete}
+                    users={users}
+                    toggleBookmark={handleToggleBookMark}
+                    totalPeople={totalPeople}
+                />
+            )}
         </>
     );
 }
