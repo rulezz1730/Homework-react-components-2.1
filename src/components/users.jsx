@@ -33,19 +33,25 @@ const Users = ({ onDelete, users: allUsers, toggleBookmark, totalPeople }) => {
         setCurrenPage(pageIndex);
     };
 
-    let filtredUsers;
-    let usersCrop;
-    let count;
-    if (allUsers && allUsers.length) {
-        filtredUsers = selectedProf
-            ? allUsers.filter((user) =>
-                  _.isEqual(user.profession, selectedProf)
-              )
-            : allUsers;
-        count = filtredUsers.length;
-        usersCrop = paginate(filtredUsers, currentPage, pageSize);
-    }
-    // ? allUsers.filter((user) => user.profession === selectedProf)
+    // let filtredUsers;
+    // let usersCrop;
+    // let count;
+    // if (allUsers && allUsers.length) {
+    //     filtredUsers = selectedProf
+    //         ? allUsers.filter((user) =>
+    //               _.isEqual(user.profession, selectedProf)
+    //           )
+    //         : allUsers;
+    //     count = filtredUsers.length;
+    //     usersCrop = paginate(filtredUsers, currentPage, pageSize);
+    // }
+
+    const filtredUsers = selectedProf
+        ? allUsers.filter((user) => _.isEqual(user.profession, selectedProf))
+        : allUsers;
+    const count = filtredUsers.length;
+    const usersCrop = paginate(filtredUsers, currentPage, pageSize);
+
     const clearFilter = () => {
         setSelectedProfession();
     };

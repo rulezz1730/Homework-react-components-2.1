@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { isObject } from "lodash";
 
 const GroupList = ({
     items,
@@ -8,10 +9,11 @@ const GroupList = ({
     onItemSelect,
     selectedItem
 }) => {
-    // console.log(Object.keys(items).forEach((item) => console.log(items[item])));
+    const typeOfItems = isObject(items) ? Object.keys(items) : items;
+
     return (
         <ul className="list-group">
-            {Object.keys(items).map((item) => (
+            {typeOfItems.map((item) => (
                 <li
                     key={items[item][valueProperty]}
                     className={
