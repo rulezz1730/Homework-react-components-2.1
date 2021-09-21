@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Qualitie = ({ qualities }) => {
-    return qualities.map((q) => (
-        <span className={`badge m-2 bg-${q.color}`} key={q._id}>
-            {q.name}
+    return qualities.map((qual) => (
+        <span className={`badge m-2 bg-${qual.color}`} key={qual._id}>
+            {qual.name}
         </span>
     ));
 };
