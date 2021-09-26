@@ -17,11 +17,10 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
     // eslint-disable-next-line no-unused-vars
     const caretFill = (item) => {
         if (selectedSort.path === item) {
-            console.log(selectedSort.order);
             if (selectedSort.order === "asc") {
-                return <i className="bi bi-caret-up-fill"></i>;
-            } else {
                 return <i className="bi bi-caret-down-fill"></i>;
+            } else {
+                return <i className="bi bi-caret-up-fill"></i>;
             }
         } else {
             return null;

@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from "react";
 import Pagination from "./pagination";
 import { paginate } from "../utils/paginate";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import api from "../api";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import _ from "lodash";
 import UsersTable from "./usersTable";
 
-const Users = () => {
+const UsersList = () => {
     const pageSize = 8;
     const [currentPage, setCurrenPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -144,11 +144,11 @@ const Users = () => {
     return "Loading...";
 };
 
-// Users.propTypes = {
-//     // onDelete: PropTypes.func.isRequired,
-//     // toggleBookmark: PropTypes.func.isRequired,
-//     // users: PropTypes.array,
-//     // totalPeople: PropTypes.func.isRequired
-// };
+UsersList.propTypes = {
+    onDelete: PropTypes.func,
+    toggleBookmark: PropTypes.func,
+    users: PropTypes.array,
+    totalPeople: PropTypes.func
+};
 
-export default Users;
+export default UsersList;
