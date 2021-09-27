@@ -17,8 +17,6 @@ function App() {
                 <Route path="/login" component={Login} />
                 <Route path="/users/:userId?" component={Users} />
             </Switch>
-            {/* <Users /> */}
-            {/* <UserPage /> */}
         </div>
     );
 }
