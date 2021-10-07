@@ -2,11 +2,10 @@
 /* eslint-disable multiline-ternary */
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import Main from "./components/layouts/main";
+import Main from "./layouts/main";
 import NavBar from "./components/navBar";
-import Login from "./components/layouts/login";
-import Users from "./components/layouts/users";
-// import UserPage from "./components/userPage";
+import Login from "./layouts/login";
+import Users from "./layouts/users";
 
 function App() {
     return (

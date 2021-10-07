@@ -9,13 +9,15 @@ import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
 import _ from "lodash";
 import UsersTable from "./usersTable";
+import SearchUsers from "./searchUsers";
 
 const UsersList = () => {
-    const pageSize = 8;
+    const pageSize = 6;
     const [currentPage, setCurrenPage] = useState(1);
     const [professions, setProfessions] = useState();
     const [selectedProf, setSelectedProfession] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
+    const [search, setSearch] = useState("");
 
     const [users, setUsers] = useState();
 
@@ -72,6 +74,7 @@ const UsersList = () => {
 
     const handleProfessionSelect = (item) => {
         setSelectedProfession(item);
+        setSearch("");
     };
 
     const handlePageChange = (pageIndex) => {
@@ -82,20 +85,33 @@ const UsersList = () => {
         setSortBy(item);
     };
 
+    const handleSearchChange = ({ target }) => {
+        setSearch(target.value);
+        setSelectedProfession();
+    };
+
     if (users) {
         const filtredUsers = selectedProf
             ? users.filter((user) => _.isEqual(user.profession, selectedProf))
             : users;
-        const count = filtredUsers.length;
+
+        const searchUsers = users.filter((user) =>
+            user.name.toLowerCase().includes(search.toLowerCase())
+        );
+
+        const count = search ? searchUsers.length : filtredUsers.length;
+
         const sortedUsers = _.orderBy(
-            filtredUsers,
+            search ? searchUsers : filtredUsers,
             [sortBy.path],
             [sortBy.order]
         );
+
         const usersCrop = paginate(sortedUsers, currentPage, pageSize);
 
         const clearFilter = () => {
             setSelectedProfession();
+            setSearch("");
         };
 
         return (
@@ -120,14 +136,22 @@ const UsersList = () => {
                         numberOfPeople={totalPeople(count)}
                         users={users}
                     ></SearchStatus>
-                    {count > 0 && (
-                        <UsersTable
-                            users={usersCrop}
-                            toggleBookmark={handleToggleBookMark}
-                            selectedSort={sortBy}
-                            onSort={handleSort}
-                            onDelete={handleDelete}
-                        />
+                    {count >= 0 && (
+                        <div>
+                            {" "}
+                            <SearchUsers
+                                search={search}
+                                onChange={handleSearchChange}
+                                name="input"
+                            />
+                            <UsersTable
+                                users={usersCrop}
+                                toggleBookmark={handleToggleBookMark}
+                                selectedSort={sortBy}
+                                onSort={handleSort}
+                                onDelete={handleDelete}
+                            />
+                        </div>
                     )}
                     <div className="d-flex justify-content-center">
                         <Pagination

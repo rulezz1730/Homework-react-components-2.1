@@ -15,24 +15,17 @@ const UserPage = ({ userId }) => {
     const returnAllUsers = () => {
         history.push("/users");
     };
+
     if (requiredUser) {
         return (
-            <>
-                {requiredUser && (
-                    <div>
-                        <h1>{requiredUser.name}</h1>
-                        <h2>Профессия: {requiredUser.profession.name}</h2>
-                        <Qualitie qualities={requiredUser.qualities} />
-                        <p>
-                            completedMeetings : {requiredUser.completedMeetings}
-                        </p>
-                        <h2>Rate: {requiredUser.rate}</h2>
-                        <button onClick={() => returnAllUsers()}>
-                            Все Пользователи
-                        </button>
-                    </div>
-                )}
-            </>
+            <div>
+                <h1>{requiredUser.name}</h1>
+                <h2>Профессия: {requiredUser.profession.name}</h2>
+                <Qualitie qualities={requiredUser.qualities} />
+                <p>completedMeetings : {requiredUser.completedMeetings}</p>
+                <h2>Rate: {requiredUser.rate}</h2>
+                <button onClick={returnAllUsers}>Все Пользователи</button>
+            </div>
         );
     }
     return <h3>Loading...</h3>;
