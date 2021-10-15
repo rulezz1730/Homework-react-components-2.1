@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import api from "../../../api";
 import Qualities from "../../ui/qualities";
 import PropTypes from "prop-types";
+// import { Link } from "react-router-dom";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
@@ -16,6 +17,10 @@ const UserPage = ({ userId }) => {
         history.push("/users");
     };
 
+    const editUser = (userId) => {
+        history.push(`/users/${userId}/edit`);
+    };
+
     if (requiredUser) {
         return (
             <div>
@@ -25,6 +30,8 @@ const UserPage = ({ userId }) => {
                 <p>completedMeetings : {requiredUser.completedMeetings}</p>
                 <h2>Rate: {requiredUser.rate}</h2>
                 <button onClick={returnAllUsers}>Все Пользователи</button>
+                {/* <Link></Link> */}
+                <button onClick={() => editUser(userId)}>Изменить</button>
             </div>
         );
     }

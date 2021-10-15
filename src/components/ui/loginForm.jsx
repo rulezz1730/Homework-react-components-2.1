@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
+import CheckBoxField from "../common/form/checkBoxField";
+import api from "../../api";
 
 const LoginForm = () => {
-    const [data, setData] = useState({ email: "", password: "" });
+    const [data, setData] = useState({
+        email: "",
+        password: "",
+        stayOn: false
+    });
+    const [professions, setProfessions] = useState();
     const [errors, setErrors] = useState({});
 
-    const handleChange = ({ target }) => {
+    useEffect(() => {
+        console.log(`Запрос с сервера`);
+        api.professions.fetchAll().then((data) => setProfessions(data));
+    }, []);
+
+    const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
@@ -43,6 +55,10 @@ const LoginForm = () => {
         validate();
     }, [data]);
 
+    useEffect(() => {
+        console.log(professions);
+    }, [professions]);
+
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
@@ -75,6 +91,14 @@ const LoginForm = () => {
                 onChange={handleChange}
                 error={errors.password}
             />
+            <CheckBoxField
+                value={data.stayOn}
+                onChange={handleChange}
+                name="stayOn"
+            >
+                Оставаться в системе
+            </CheckBoxField>
+
             <button
                 type="submit"
                 disabled={!isValid}
