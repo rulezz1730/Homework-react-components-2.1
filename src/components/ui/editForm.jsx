@@ -1,36 +1,70 @@
 import React, { useState, useEffect } from "react";
-import TextField from "../common/form/textField";
 import { useParams } from "react-router";
+import TextField from "../common/form/textField";
 import api from "../../api/";
 import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radioField";
 import MultiSelectField from "../common/form/multiSelectField";
+import { validator } from "../../utils/validator";
 
 const EditForm = () => {
     const [user, setUser] = useState();
     const [professions, setProfessions] = useState();
     const [qualities, setQualities] = useState();
+    const [errors, setErrors] = useState({});
+    // const history = useHistory();
 
     const { userId } = useParams();
 
     useEffect(() => {
         api.users
             .getById(userId)
-            .then((user) => setUser({ ...user, email: "", sex: "" }));
+            .then((user) => setUser({ ...user, email: "", sex: "male" }));
         api.professions.fetchAll().then((prof) => setProfessions(prof));
         api.qualities.fetchAll().then((qual) => setQualities(qual));
     }, []);
 
+    const validatorConfig = {
+        email: {
+            isRequired: {
+                message: "Электронная почта обязательна для заполнения"
+            },
+            isEmail: {
+                message: "Email введен не корректно"
+            }
+        },
+        name: {
+            isRequired: {
+                message: "Имя обязательно для заполнения"
+            }
+        },
+        profession: {
+            isRequired: {
+                message: "Обязательно выберите вашу профессию"
+            }
+        }
+    };
+
     useEffect(() => {
-        console.log(user);
+        validate();
     }, [user]);
 
+    const validate = () => {
+        const errors = validator(user, validatorConfig);
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
     const handleChange = (target) => {
         console.log(target);
         setUser((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
+    };
+
+    const handleSubmit = (userId, data) => {
+        api.users.update(userId, data);
+        // history.push(`users/${userId}`);
     };
 
     if (user && qualities) {
@@ -49,18 +83,21 @@ const EditForm = () => {
                     name="name"
                     value={user.name}
                     onChange={handleChange}
+                    error={errors.name}
                 />
                 <TextField
                     label="Электронная почта"
                     name="email"
                     value={user.email}
                     onChange={handleChange}
+                    error={errors.email}
                 />
                 <SelectField
                     label="Выберите свою профессию"
                     value={user.profession.name}
                     options={professions}
                     onChange={handleChange}
+                    error={errors.profession}
                 />
 
                 <RadioField
@@ -81,6 +118,13 @@ const EditForm = () => {
                     label="Выберите Ваши качества"
                     value={userQual}
                 />
+                <button
+                    type="submit"
+                    className="btn btn-primary w-100 mx-auto"
+                    onClick={() => handleSubmit(userId, user)}
+                >
+                    Обновить
+                </button>
             </form>
         );
     }
