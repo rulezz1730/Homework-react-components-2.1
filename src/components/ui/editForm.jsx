@@ -12,17 +12,29 @@ const EditForm = () => {
     const [professions, setProfessions] = useState();
     const [qualities, setQualities] = useState();
     const [errors, setErrors] = useState({});
-    // const history = useHistory();
 
     const { userId } = useParams();
 
     useEffect(() => {
-        api.users
-            .getById(userId)
-            .then((user) => setUser({ ...user, email: "", sex: "male" }));
+        api.users.getById(userId).then((user) =>
+            setUser({
+                ...user,
+                email: "",
+                sex: "male",
+                profession: user.profession.name
+            })
+        );
         api.professions.fetchAll().then((prof) => setProfessions(prof));
         api.qualities.fetchAll().then((qual) => setQualities(qual));
     }, []);
+
+    // useEffect(() => {
+    //     console.log(qualities);
+    // }, [qualities]);
+
+    // useEffect(() => {
+    //     console.log(user);
+    // }, [user]);
 
     const validatorConfig = {
         email: {
@@ -36,11 +48,6 @@ const EditForm = () => {
         name: {
             isRequired: {
                 message: "Имя обязательно для заполнения"
-            }
-        },
-        profession: {
-            isRequired: {
-                message: "Обязательно выберите вашу профессию"
             }
         }
     };
@@ -74,8 +81,8 @@ const EditForm = () => {
                 value: qual._id
             };
         });
+
         console.log(userQual);
-        // console.log(userQualities);
         return (
             <form>
                 <TextField
@@ -94,10 +101,11 @@ const EditForm = () => {
                 />
                 <SelectField
                     label="Выберите свою профессию"
+                    defaultOption="Choose..."
                     value={user.profession.name}
                     options={professions}
                     onChange={handleChange}
-                    error={errors.profession}
+                    // error={errors.profession}
                 />
 
                 <RadioField

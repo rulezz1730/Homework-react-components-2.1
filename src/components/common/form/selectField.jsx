@@ -26,6 +26,7 @@ const SelectField = ({
                   value: options[optionName]._id
               }))
             : options;
+    console.log(optionsArray);
 
     return (
         <div className="mb-4">
