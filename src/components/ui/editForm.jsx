@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import TextField from "../common/form/textField";
 import api from "../../api/";
 import SelectField from "../common/form/selectField";
@@ -8,6 +8,7 @@ import MultiSelectField from "../common/form/multiSelectField";
 import { validator } from "../../utils/validator";
 
 const EditForm = () => {
+    const history = useHistory();
     const [user, setUser] = useState();
     const [professions, setProfessions] = useState();
     const [qualities, setQualities] = useState();
@@ -19,22 +20,25 @@ const EditForm = () => {
         api.users.getById(userId).then((user) =>
             setUser({
                 ...user,
-                email: "",
-                sex: "male",
-                profession: user.profession.name
+                email: user.email ? user.email : "",
+                sex: "male"
             })
         );
+        // api.users.getById(userId).then((user) =>
+        //     setUser({
+        //         ...user,
+        //         email: user.email ? user.email : "",
+        //         sex: "male",
+        //         profession: user.profession.name
+        //     })
+        // );
         api.professions.fetchAll().then((prof) => setProfessions(prof));
         api.qualities.fetchAll().then((qual) => setQualities(qual));
     }, []);
 
-    // useEffect(() => {
-    //     console.log(qualities);
-    // }, [qualities]);
-
-    // useEffect(() => {
-    //     console.log(user);
-    // }, [user]);
+    useEffect(() => {
+        console.log(user);
+    }, [user]);
 
     const validatorConfig = {
         email: {
@@ -62,16 +66,25 @@ const EditForm = () => {
         return Object.keys(errors).length === 0;
     };
     const handleChange = (target) => {
-        console.log(target);
+        console.log([target.name]);
+        // eslint-disable-next-line no-constant-condition
+        if ([target.name] === "professtion") {
+            setUser((prevState) => ({
+                ...prevState,
+                [target.name]: { _id: target.value, name: target.name }
+            }));
+        }
         setUser((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
     };
 
-    const handleSubmit = (userId, data) => {
-        api.users.update(userId, data);
-        // history.push(`users/${userId}`);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        api.users
+            .update(userId, user)
+            .then((data) => history.push(`/users/${data._id}`));
     };
 
     if (user && qualities) {
@@ -82,9 +95,8 @@ const EditForm = () => {
             };
         });
 
-        console.log(userQual);
         return (
-            <form>
+            <form onSubmit={handleSubmit}>
                 <TextField
                     label="Имя"
                     name="name"
@@ -101,7 +113,7 @@ const EditForm = () => {
                 />
                 <SelectField
                     label="Выберите свою профессию"
-                    defaultOption="Choose..."
+                    // defaultOption="Choose..."
                     value={user.profession.name}
                     options={professions}
                     onChange={handleChange}
@@ -126,11 +138,7 @@ const EditForm = () => {
                     label="Выберите Ваши качества"
                     value={userQual}
                 />
-                <button
-                    type="submit"
-                    className="btn btn-primary w-100 mx-auto"
-                    onClick={() => handleSubmit(userId, user)}
-                >
+                <button type="submit" className="btn btn-primary w-100 mx-auto">
                     Обновить
                 </button>
             </form>

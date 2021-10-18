@@ -26,9 +26,9 @@ const UsersListPage = () => {
         api.users.fetchAll().then((data) => setUsers(data));
     }, []);
 
-    useEffect(() => {
-        console.log(users);
-    }, [users]);
+    // useEffect(() => {
+    //     console.log(users);
+    // }, [users]);
 
     const totalPeople = (count) => {
         const renderPhrase = (number, titles) => {

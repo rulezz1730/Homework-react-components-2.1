@@ -37,8 +37,8 @@ const SelectField = ({
                 className={getInputClasses()}
                 id="validationCustom04"
                 name="profession"
-                value={value}
                 onChange={handleChange}
+                value={value}
             >
                 <option disabled value="">
                     {defaultOption}
