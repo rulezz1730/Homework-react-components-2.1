@@ -7,15 +7,11 @@ import PropTypes from "prop-types";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
-    const [requiredUser, setrequiredUser] = useState();
+    const [requiredUser, setRequiredUser] = useState();
 
     useEffect(() => {
-        api.users.getById(userId).then((data) => setrequiredUser(data));
+        api.users.getById(userId).then((data) => setRequiredUser(data));
     });
-
-    const returnAllUsers = () => {
-        history.push("/users");
-    };
 
     const editUser = (userId) => {
         history.push(`/users/${userId}/edit`);
@@ -29,8 +25,6 @@ const UserPage = ({ userId }) => {
                 <Qualities qualities={requiredUser.qualities} />
                 <p>completedMeetings : {requiredUser.completedMeetings}</p>
                 <h2>Rate: {requiredUser.rate}</h2>
-                <button onClick={returnAllUsers}>Все Пользователи</button>
-                {/* <Link></Link> */}
                 <button onClick={() => editUser(userId)}>Изменить</button>
             </div>
         );

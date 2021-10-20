@@ -21,24 +21,37 @@ const EditForm = () => {
             setUser({
                 ...user,
                 email: user.email ? user.email : "",
-                sex: "male"
+                sex: user.sex ? user.sex : "other",
+                profession: user.profession._id,
+                qualities: user.qualities.map((qual) => {
+                    return { label: qual.name, value: qual._id };
+                })
             })
         );
-        // api.users.getById(userId).then((user) =>
-        //     setUser({
-        //         ...user,
-        //         email: user.email ? user.email : "",
-        //         sex: "male",
-        //         profession: user.profession.name
-        //     })
-        // );
         api.professions.fetchAll().then((prof) => setProfessions(prof));
         api.qualities.fetchAll().then((qual) => setQualities(qual));
     }, []);
 
-    useEffect(() => {
-        console.log(user);
-    }, [user]);
+    const getProfessionById = (professionId) => {
+        for (const prof in professions) {
+            if (professions[prof]._id === professionId) {
+                return professions[prof];
+            }
+        }
+    };
+
+    const getQualitiesById = (userQualities) => {
+        const newQualities = [];
+        for (const qualUser of userQualities) {
+            for (const qual in qualities) {
+                if (qualUser.value === qualities[qual]._id) {
+                    newQualities.push(qualities[qual]);
+                }
+            }
+        }
+        console.log(newQualities);
+        return newQualities;
+    };
 
     const validatorConfig = {
         email: {
@@ -66,14 +79,7 @@ const EditForm = () => {
         return Object.keys(errors).length === 0;
     };
     const handleChange = (target) => {
-        console.log([target.name]);
-        // eslint-disable-next-line no-constant-condition
-        if ([target.name] === "professtion") {
-            setUser((prevState) => ({
-                ...prevState,
-                [target.name]: { _id: target.value, name: target.name }
-            }));
-        }
+        console.log(target.name, target.value);
         setUser((prevState) => ({
             ...prevState,
             [target.name]: target.value
@@ -83,65 +89,72 @@ const EditForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         api.users
-            .update(userId, user)
-            .then((data) => history.push(`/users/${data._id}`));
+            .update(userId, {
+                ...user,
+                profession: getProfessionById(user.profession),
+                qualities: getQualitiesById(user.qualities)
+            })
+            .then((data) => history.replace(`/users/${user._id}`));
     };
 
+    const isValid = Object.keys(errors).length === 0;
+
     if (user && qualities) {
-        const userQual = user.qualities.map((qual) => {
-            return {
-                label: qual.name,
-                value: qual._id
-            };
-        });
-
         return (
-            <form onSubmit={handleSubmit}>
-                <TextField
-                    label="Имя"
-                    name="name"
-                    value={user.name}
-                    onChange={handleChange}
-                    error={errors.name}
-                />
-                <TextField
-                    label="Электронная почта"
-                    name="email"
-                    value={user.email}
-                    onChange={handleChange}
-                    error={errors.email}
-                />
-                <SelectField
-                    label="Выберите свою профессию"
-                    // defaultOption="Choose..."
-                    value={user.profession.name}
-                    options={professions}
-                    onChange={handleChange}
-                    // error={errors.profession}
-                />
+            <div className="container mt-5">
+                <div className="row">
+                    <div className="col-md-6 offset-md-3 shadow p-5">
+                        <form onSubmit={handleSubmit}>
+                            <TextField
+                                label="Имя"
+                                name="name"
+                                value={user.name}
+                                onChange={handleChange}
+                                error={errors.name}
+                            />
+                            <TextField
+                                label="Электронная почта"
+                                name="email"
+                                value={user.email}
+                                onChange={handleChange}
+                                error={errors.email}
+                            />
+                            <SelectField
+                                label="Выберите свою профессию"
+                                value={user.profession.value}
+                                options={professions}
+                                onChange={handleChange}
+                            />
 
-                <RadioField
-                    options={[
-                        { name: "Male", value: "male" },
-                        { name: "Female", value: "female" },
-                        { name: "Other", value: "other" }
-                    ]}
-                    value={user.sex}
-                    name="sex"
-                    onChange={handleChange}
-                    label="Выберите Ваш пол"
-                />
-                <MultiSelectField
-                    options={qualities}
-                    name="qualities"
-                    onChange={handleChange}
-                    label="Выберите Ваши качества"
-                    value={userQual}
-                />
-                <button type="submit" className="btn btn-primary w-100 mx-auto">
-                    Обновить
-                </button>
-            </form>
+                            <RadioField
+                                options={[
+                                    { name: "Male", value: "male" },
+                                    { name: "Female", value: "female" },
+                                    { name: "Other", value: "other" }
+                                ]}
+                                value={user.sex}
+                                name="sex"
+                                onChange={handleChange}
+                                label="Выберите Ваш пол"
+                            />
+                            <MultiSelectField
+                                options={qualities}
+                                name="qualities"
+                                onChange={handleChange}
+                                label="Выберите Ваши качества"
+                                value={user.qualities}
+                            />
+                            <button
+                                disabled={!isValid}
+                                type="submit"
+                                className="btn btn-primary w-100 mx-auto"
+                            >
+                                Обновить
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         );
     }
     return "Loading...";

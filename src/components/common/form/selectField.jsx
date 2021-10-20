@@ -11,6 +11,7 @@ const SelectField = ({
     options,
     error
 }) => {
+    const qwe = value;
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
@@ -26,7 +27,8 @@ const SelectField = ({
                   value: options[optionName]._id
               }))
             : options;
-    console.log(optionsArray);
+
+    console.log(qwe);
 
     return (
         <div className="mb-4">
