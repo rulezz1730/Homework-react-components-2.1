@@ -5,13 +5,9 @@ import RegisterForm from "../components/ui/registerForm";
 
 const Login = () => {
     const { type } = useParams();
-    console.log(typeof type);
-
     const [formType, setFormType] = useState(
         type === "register" ? type : "login"
     );
-
-    console.log(type);
 
     const toggleFormType = () => {
         setFormType((prevState) =>

@@ -21,12 +21,12 @@ const qualities = {
         color: "danger"
     },
     handsome: {
-        _id: "67rdca3eeb7f6fgeed471103",
+        _id: "67rdca3eeb7f6fgeed471102",
         name: "Красавчик",
         color: "info"
     },
     uncertain: {
-        _id: "67rdca3eeb7f6fgeed471102",
+        _id: "67rdca3eeb7f6fgeed471103",
         name: "Неуверенный",
         color: "dark"
     }
@@ -152,12 +152,10 @@ const fetchAll = () =>
             resolve(JSON.parse(localStorage.getItem("users")));
         }, 2000);
     });
-
 const update = (id, data) =>
     new Promise((resolve) => {
         const users = JSON.parse(localStorage.getItem("users"));
         const userIndex = users.findIndex((u) => u._id === id);
-        console.log(data);
         users[userIndex] = { ...users[userIndex], ...data };
         localStorage.setItem("users", JSON.stringify(users));
         resolve(users[userIndex]);

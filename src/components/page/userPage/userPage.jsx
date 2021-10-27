@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router";
 import api from "../../../api";
-import Qualities from "../../ui/qualities";
 import PropTypes from "prop-types";
-// import { Link } from "react-router-dom";
+import UserProfile from "../../ui/userProfile/userCard";
+import Comments from "../../ui/userProfile/comments";
+import QualitiesCard from "../../ui/userProfile/qualitiesCard";
+import MeetingsCard from "../../ui/userProfile/meetingsCard";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
@@ -11,25 +13,36 @@ const UserPage = ({ userId }) => {
 
     useEffect(() => {
         api.users.getById(userId).then((data) => setRequiredUser(data));
-    });
+    }, []);
 
     const editUser = (userId) => {
-        history.push(`/users/${userId}/edit`);
+        history.push(history.location.pathname + "/edit");
     };
 
     if (requiredUser) {
         return (
-            <div>
-                <h1>{requiredUser.name}</h1>
-                <h2>Профессия: {requiredUser.profession.name}</h2>
-                <Qualities qualities={requiredUser.qualities} />
-                <p>completedMeetings : {requiredUser.completedMeetings}</p>
-                <h2>Rate: {requiredUser.rate}</h2>
-                <button onClick={() => editUser(userId)}>Изменить</button>
+            <div className="container">
+                <div className="row gutters-sm">
+                    <div className="col-md-4 mb-3 ">
+                        <UserProfile
+                            requiredUser={requiredUser}
+                            editUserButton={editUser}
+                            userId={userId}
+                        />
+                        <QualitiesCard qualities={requiredUser.qualities} />
+                        <MeetingsCard
+                            completeMeeting={requiredUser.completedMeetings}
+                        />
+                    </div>
+                    <div className="col-md-8">
+                        <Comments />
+                    </div>
+                </div>
             </div>
         );
+    } else {
+        return <h1>Loading...</h1>;
     }
-    return <h3>Loading...</h3>;
 };
 
 UserPage.propTypes = {

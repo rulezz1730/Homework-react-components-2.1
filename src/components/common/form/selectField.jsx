@@ -9,10 +9,11 @@ const SelectField = ({
     onChange,
     defaultOption,
     options,
-    error
+    error,
+    name
 }) => {
-    const qwe = value;
     const handleChange = ({ target }) => {
+        console.log(target);
         onChange({ name: target.name, value: target.value });
     };
     const getInputClasses = () => {
@@ -28,7 +29,7 @@ const SelectField = ({
               }))
             : options;
 
-    console.log(qwe);
+    console.log(optionsArray);
 
     return (
         <div className="mb-4">
@@ -38,16 +39,20 @@ const SelectField = ({
             <select
                 className={getInputClasses()}
                 id="validationCustom04"
-                name="profession"
+                name={name}
                 onChange={handleChange}
                 value={value}
+                error={error}
             >
                 <option disabled value="">
                     {defaultOption}
                 </option>
                 {optionsArray &&
                     optionsArray.map((option) => (
-                        <option value={option.value} key={option.value}>
+                        <option
+                            value={option.value || option._id}
+                            key={option.value || option._id}
+                        >
                             {option.name}
                         </option>
                     ))}
@@ -63,7 +68,8 @@ SelectField.propTypes = {
     value: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string,
-    options: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
+    options: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+    name: PropTypes.string
 };
 
 export default SelectField;

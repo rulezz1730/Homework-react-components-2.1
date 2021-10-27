@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router";
-import TextField from "../common/form/textField";
-import api from "../../api/";
-import SelectField from "../common/form/selectField";
-import RadioField from "../common/form/radioField";
-import MultiSelectField from "../common/form/multiSelectField";
-import { validator } from "../../utils/validator";
+import TextField from "../../common/form/textField";
+import api from "../../../api";
+import SelectField from "../../common/form/selectField";
+import RadioField from "../../common/form/radioField";
+import MultiSelectField from "../../common/form/multiSelectField";
+import { validator } from "../../../utils/validator";
 
-const EditForm = () => {
+const EditUserPage = () => {
     const history = useHistory();
     const [user, setUser] = useState();
     const [professions, setProfessions] = useState();
@@ -97,13 +97,20 @@ const EditForm = () => {
             .then((data) => history.replace(`/users/${user._id}`));
     };
 
+    const pressBack = () => {
+        history.goBack();
+    };
+
     const isValid = Object.keys(errors).length === 0;
 
-    if (user && qualities) {
-        return (
-            <div className="container mt-5">
-                <div className="row">
-                    <div className="col-md-6 offset-md-3 shadow p-5">
+    return (
+        <div className="container mt-5">
+            <button className="btn btn-primary" onClick={() => pressBack()}>
+                Назад
+            </button>
+            <div className="row">
+                <div className="col-md-6 offset-md-3 shadow p-4">
+                    {user && professions ? (
                         <form onSubmit={handleSubmit}>
                             <TextField
                                 label="Имя"
@@ -152,12 +159,13 @@ const EditForm = () => {
                                 Обновить
                             </button>
                         </form>
-                    </div>
+                    ) : (
+                        "Loading..."
+                    )}
                 </div>
             </div>
-        );
-    }
-    return "Loading...";
+        </div>
+    );
 };
 
-export default EditForm;
+export default EditUserPage;
