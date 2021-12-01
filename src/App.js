@@ -6,6 +6,9 @@ import NavBar from "./components/ui/navBar";
 import Main from "./layouts/main";
 import Login from "./layouts/login";
 import Users from "./layouts/users";
+import { ToastContainer } from "react-toastify";
+import { ProfessionProvider } from "./hooks/useProfession";
+import { QualityProvider } from "./hooks/useQuality";
 // import EditForm from "./components/ui/editForm";
 
 function App() {
@@ -13,11 +16,19 @@ function App() {
         <div>
             <NavBar />
             <Switch>
-                <Route path="/users/:userId?/:edit?" component={Users} />
-                <Route path="/login/:type?" component={Login} />
+                <ProfessionProvider>
+                    <QualityProvider>
+                        <Route
+                            path="/users/:userId?/:edit?"
+                            component={Users}
+                        />
+                    </QualityProvider>
+                    <Route path="/login/:type?" component={Login} />
+                </ProfessionProvider>
                 <Route path="/" exact component={Main} />
                 <Redirect to="/" />
             </Switch>
+            <ToastContainer />
         </div>
     );
 }

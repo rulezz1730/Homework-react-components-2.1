@@ -10,6 +10,7 @@ import SearchStatus from "../../ui/searchStatus";
 import _ from "lodash";
 import UsersTable from "../../ui/usersTable";
 import SearchUsers from "../../searchUsers";
+import { useUser } from "../../../hooks/useUsers";
 
 const UsersListPage = () => {
     const pageSize = 6;
@@ -19,12 +20,15 @@ const UsersListPage = () => {
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [search, setSearch] = useState("");
 
-    const [users, setUsers] = useState();
+    // const [users, setUsers] = useState();
+    const { users } = useUser();
 
-    useEffect(() => {
-        console.log(`Запрос пользователей с сервера`);
-        api.users.fetchAll().then((data) => setUsers(data));
-    }, []);
+    console.log(users);
+
+    // useEffect(() => {
+    //     console.log(`Запрос пользователей с сервера`);
+    //     api.users.fetchAll().then((data) => setUsers(data));
+    // }, []);
 
     const totalPeople = (count) => {
         const renderPhrase = (number, titles) => {
@@ -50,7 +54,8 @@ const UsersListPage = () => {
     };
 
     const handleDelete = (itemId) => {
-        setUsers(users.filter((userItem) => userItem._id !== itemId));
+        // setUsers(users.filter((userItem) => userItem._id !== itemId));
+        console.log(itemId);
     };
 
     const handleToggleBookMark = (itemId) => {
@@ -60,7 +65,8 @@ const UsersListPage = () => {
             }
             return user;
         });
-        setUsers(newUsers);
+        // setUsers(newUsers);
+        console.log(newUsers);
     };
 
     useEffect(() => {
