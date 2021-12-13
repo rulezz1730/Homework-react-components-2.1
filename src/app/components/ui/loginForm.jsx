@@ -7,43 +7,33 @@ import { useHistory } from "react-router-dom/";
 
 const LoginForm = () => {
     const history = useHistory();
-    const { logIn } = useAuth();
+
     const [data, setData] = useState({
         email: "",
         password: "",
         stayOn: false
     });
     const [errors, setErrors] = useState({});
+    const [enterError, setEnterError] = useState(null);
+    const { logIn } = useAuth();
 
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
+        setEnterError(null);
     };
 
     const validatorConfig = {
         email: {
             isRequired: {
                 message: "Электронная почта обязательна для заполнения"
-            },
-            isEmail: {
-                message: "Email введен не корректно"
             }
         },
         password: {
             isRequired: {
                 message: "Пароль обязателен для заполнения"
-            },
-            isCapital: {
-                message: "Пароль должен содержать хотя бы одну заглавную букву"
-            },
-            isContainDigit: {
-                message: "Пароль должен содержать хотя бы одну цифру"
-            },
-            min: {
-                message: "Пароль должен содержать минимум 8 символов",
-                value: 8
             }
         }
     };
@@ -55,6 +45,7 @@ const LoginForm = () => {
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
+
         return Object.keys(errors).length === 0;
     };
 
@@ -69,7 +60,8 @@ const LoginForm = () => {
             await logIn(data);
             history.push("/");
         } catch (error) {
-            setErrors(error);
+            console.log(error.message);
+            setEnterError(error.message);
         }
     };
 
@@ -97,10 +89,10 @@ const LoginForm = () => {
             >
                 Оставаться в системе
             </CheckBoxField>
-
+            {enterError && <p className="text-danger">{enterError}</p>}
             <button
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || enterError}
                 className="btn btn-primary w-100 mx-auto"
             >
                 Submit
