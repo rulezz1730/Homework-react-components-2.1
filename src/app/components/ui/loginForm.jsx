@@ -2,21 +2,18 @@ import React, { useState, useEffect } from "react";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
-import api from "../../api";
+import { useAuth } from "../../hooks/useAuth";
+import { useHistory } from "react-router-dom/";
 
 const LoginForm = () => {
+    const history = useHistory();
+    const { logIn } = useAuth();
     const [data, setData] = useState({
         email: "",
         password: "",
         stayOn: false
     });
-    const [professions, setProfessions] = useState();
     const [errors, setErrors] = useState({});
-
-    useEffect(() => {
-        console.log(`Запрос с сервера`);
-        api.professions.fetchAll().then((data) => setProfessions(data));
-    }, []);
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -55,10 +52,6 @@ const LoginForm = () => {
         validate();
     }, [data]);
 
-    useEffect(() => {
-        console.log(professions);
-    }, [professions]);
-
     const validate = () => {
         const errors = validator(data, validatorConfig);
         setErrors(errors);
@@ -67,11 +60,17 @@ const LoginForm = () => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
         console.log(data);
+        try {
+            await logIn(data);
+            history.push("/");
+        } catch (error) {
+            setErrors(error);
+        }
     };
 
     return (

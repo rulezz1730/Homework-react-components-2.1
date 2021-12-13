@@ -16,13 +16,6 @@ export const QualityProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (error !== null) {
-            toast(error);
-            setError(null);
-        }
-    }, [error]);
-
-    useEffect(() => {
         getQualitiesList();
     }, []);
 
@@ -30,6 +23,13 @@ export const QualityProvider = ({ children }) => {
         const { message } = error.response.data;
         setError(message);
     }
+
+    useEffect(() => {
+        if (error !== null) {
+            toast(error);
+            setError(null);
+        }
+    }, [error]);
 
     function getQualities(userQualities) {
         return qualities.filter((qual) => userQualities.includes(qual._id));

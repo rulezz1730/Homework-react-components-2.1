@@ -13,7 +13,6 @@ const SelectField = ({
     name
 }) => {
     const handleChange = ({ target }) => {
-        console.log(target);
         onChange({ name: target.name, value: target.value });
     };
     const getInputClasses = () => {
@@ -28,8 +27,6 @@ const SelectField = ({
                   value: options[optionName]._id
               }))
             : options;
-
-    console.log(optionsArray);
 
     return (
         <div className="mb-4">
@@ -53,7 +50,7 @@ const SelectField = ({
                             value={option.value || option._id}
                             key={option.value || option._id}
                         >
-                            {option.name}
+                            {option.label}
                         </option>
                     ))}
             </select>

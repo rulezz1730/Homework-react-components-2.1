@@ -20,15 +20,7 @@ const UsersListPage = () => {
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const [search, setSearch] = useState("");
 
-    // const [users, setUsers] = useState();
     const { users } = useUser();
-
-    console.log(users);
-
-    // useEffect(() => {
-    //     console.log(`Запрос пользователей с сервера`);
-    //     api.users.fetchAll().then((data) => setUsers(data));
-    // }, []);
 
     const totalPeople = (count) => {
         const renderPhrase = (number, titles) => {
@@ -97,6 +89,7 @@ const UsersListPage = () => {
     };
 
     if (users) {
+        console.log(users);
         const filtredUsers = selectedProf
             ? users.filter((user) => _.isEqual(user.profession, selectedProf))
             : users;

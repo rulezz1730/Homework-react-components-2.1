@@ -19,10 +19,6 @@ const UserProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        console.log(users);
-    }, [users]);
-
-    useEffect(() => {
         if (error !== null) {
             toast(error);
             setError(null);

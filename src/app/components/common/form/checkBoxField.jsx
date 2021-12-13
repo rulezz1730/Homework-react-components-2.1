@@ -5,7 +5,6 @@ const CheckBoxField = ({ name, value, onChange, children, error }) => {
     const handleChange = (params) => {
         onChange({ name: name, value: !value });
     };
-    console.log(error);
     const getInputClasses = () => {
         return "form-check-input" + (error ? " is-invalid" : "");
     };
