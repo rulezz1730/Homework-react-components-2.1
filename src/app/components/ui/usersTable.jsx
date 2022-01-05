@@ -9,13 +9,7 @@ import Table from "../common/table";
 import { Link } from "react-router-dom";
 import Profession from "./profession";
 
-const UsersTable = ({
-    users,
-    onDelete,
-    toggleBookmark,
-    selectedSort,
-    onSort
-}) => {
+const UsersTable = ({ users, toggleBookmark, selectedSort, onSort }) => {
     const columns = {
         name: {
             path: "name",
@@ -49,17 +43,17 @@ const UsersTable = ({
                     status={user.status}
                 />
             )
-        },
-        delete: {
-            component: (user) => (
-                <button
-                    onClick={() => onDelete(user._id)}
-                    className={`btn btn-danger`}
-                >
-                    delete
-                </button>
-            )
         }
+        // delete: {
+        //     component: (user) => (
+        //         <button
+        //             onClick={() => onDelete(user._id)}
+        //             className={`btn btn-danger`}
+        //         >
+        //             delete
+        //         </button>
+        //     )
+        // }
     };
     return (
         <Table

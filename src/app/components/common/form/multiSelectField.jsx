@@ -12,11 +12,10 @@ const MultiSelectField = ({ options, onChange, name, label, value }) => {
                   // eslint-disable-next-line react/prop-types
                   value: options[optionName]._id
               }))
-            : options;
-
-    // if (optionsArray && value) {
-    //     console.log(optionsArray, value);
-    // }
+            : options.map((option) => ({
+                  label: option.name,
+                  value: option._id
+              }));
 
     const handleChange = (value) => {
         onChange({ name: name, value: value });
@@ -33,7 +32,7 @@ const MultiSelectField = ({ options, onChange, name, label, value }) => {
                 classNamePrefix="select"
                 onChange={handleChange}
                 name={name}
-                defaultValue={value}
+                value={value}
             />
         </div>
     );

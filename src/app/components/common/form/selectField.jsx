@@ -22,7 +22,7 @@ const SelectField = ({
     const optionsArray =
         !Array.isArray(options) && typeof options === "object"
             ? Object.keys(options).map((optionName) => ({
-                  name: options[optionName].name,
+                  label: options[optionName].name,
                   // eslint-disable-next-line react/prop-types
                   value: options[optionName]._id
               }))
@@ -49,9 +49,8 @@ const SelectField = ({
                         <option
                             value={option.value || option._id}
                             key={option.value || option._id}
-                        >
-                            {option.label}
-                        </option>
+                            label={option.label || option.name}
+                        ></option>
                     ))}
             </select>
             {error && <div className="invalid-feedback">{error}</div>}

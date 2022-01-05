@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from "react";
-import SelectField from "../form/selectField";
 import TextAreaField from "../form/textAreaField";
 import PropTypes from "prop-types";
-import api from "../../../api";
 import { validator } from "../../../utils/validator";
-const initialData = { userId: "", content: "" };
+// const initialData = { userId: "", content: "" };
 
 const AddNewComment = ({ onSubmit }) => {
-    const [data, setData] = useState(initialData);
-    const [users, setUsers] = useState({});
+    const [data, setData] = useState({});
     const [errors, setErrors] = useState({});
 
     const validatorConfig = {
-        userId: {
-            isRequired: {
-                message: "Необходимо обязательно выбрать пользователя"
-            }
-        },
-
         content: {
             isRequired: {
                 message: "Комментарий обязателен для заполнения"
@@ -25,12 +16,8 @@ const AddNewComment = ({ onSubmit }) => {
         }
     };
 
-    useEffect(() => {
-        api.users.fetchAll().then(setUsers);
-    }, []);
-
     const clearForm = () => {
-        setData(initialData);
+        setData({});
         setErrors({});
     };
 
@@ -52,7 +39,7 @@ const AddNewComment = ({ onSubmit }) => {
         const isValid = validate();
         if (!isValid) return;
         onSubmit(data);
-        clearForm();
+        clearForm({});
     };
 
     useEffect(() => {
@@ -61,36 +48,19 @@ const AddNewComment = ({ onSubmit }) => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    const arrayOfUsers =
-        users &&
-        Object.keys(users).map((userId) => ({
-            name: users[userId].name,
-            _id: users[userId]._id
-        }));
-
     return (
         <div>
             <h2>New comment</h2>
             <form onSubmit={handleSubmit}>
-                <SelectField
-                    label="Выберите пользователя"
-                    options={arrayOfUsers}
-                    onChange={handleChange}
-                    name="userId"
-                    value={data.userId}
-                    defaultOption="Выберите пользователя"
-                    error={errors.userId}
-                />
-
                 <TextAreaField
                     label="Сообщение"
                     name="content"
                     onChange={handleChange}
-                    value={data.content}
+                    value={data.content || ""}
                     error={errors.content}
                 />
                 <button
-                    className="btn btn-primary float-end"
+                    className="btn btn-primary float-end mt-3"
                     disabled={!isValid}
                 >
                     Опубликовать

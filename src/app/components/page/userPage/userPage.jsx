@@ -1,41 +1,47 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useHistory } from "react-router";
-import api from "../../../api";
+// import api from "../../../api";
 import PropTypes from "prop-types";
 import UserProfile from "../../ui/userProfile/userCard";
 import Comments from "../../ui/userProfile/comments";
 import QualitiesCard from "../../ui/userProfile/qualitiesCard";
 import MeetingsCard from "../../ui/userProfile/meetingsCard";
+import { useUser } from "../../../hooks/useUsers";
+import CommentsProvider from "../../../hooks/useComments";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
-    const [requiredUser, setRequiredUser] = useState();
+    const { getUserById } = useUser();
+    const user = getUserById(userId);
+    // const [requiredUser, setRequiredUser] = useState();
 
-    useEffect(() => {
-        api.users.getById(userId).then((data) => setRequiredUser(data));
-    }, []);
+    // useEffect(() => {
+    //     api.users.getById(userId).then((data) => setRequiredUser(data));
+    // }, []);
 
     const editUser = (userId) => {
-        history.push(history.location.pathname + "/edit");
+        history.push(`${history.location.pathname}edit/`);
     };
 
-    if (requiredUser) {
+    if (user) {
         return (
             <div className="container">
                 <div className="row gutters-sm">
                     <div className="col-md-4 mb-3 ">
                         <UserProfile
-                            requiredUser={requiredUser}
+                            requiredUser={user}
                             editUserButton={editUser}
                             userId={userId}
                         />
-                        <QualitiesCard qualities={requiredUser.qualities} />
+                        <QualitiesCard qualities={user.qualities} />
                         <MeetingsCard
-                            completeMeeting={requiredUser.completedMeetings}
+                            completeMeeting={user.completedMeetings}
                         />
                     </div>
                     <div className="col-md-8">
-                        <Comments />
+                        <CommentsProvider>
+                            <Comments />
+                        </CommentsProvider>
                     </div>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import React, { useState, useEffect } from "react";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
@@ -58,7 +59,11 @@ const LoginForm = () => {
         console.log(data);
         try {
             await logIn(data);
-            history.push("/");
+            history.push(
+                history.location.state
+                    ? history.location.state.from.pathname
+                    : "/"
+            );
         } catch (error) {
             console.log(error.message);
             setEnterError(error.message);
