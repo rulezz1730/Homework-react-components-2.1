@@ -19,6 +19,10 @@ const EditUserPage = () => {
     const { currentUser, updateUserData } = useAuth();
     const { professions, isLoading: isProfessionLoading } = useProfession();
     const { qualities, isLoading: isQualitiesLoading } = useQuality();
+    const qualitiesList = qualities.map((q) => ({
+        label: q.name,
+        value: q._id
+    }));
     const { userId } = useParams();
 
     if (currentUser._id !== userId) {
@@ -144,7 +148,7 @@ const EditUserPage = () => {
                                 label="Выберите Ваш пол"
                             />
                             <MultiSelectField
-                                options={qualities}
+                                options={qualitiesList}
                                 name="qualities"
                                 onChange={handleChange}
                                 label="Выберите Ваши качества"

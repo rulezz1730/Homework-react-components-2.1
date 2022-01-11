@@ -12,14 +12,13 @@ const MultiSelectField = ({ options, onChange, name, label, value }) => {
                   // eslint-disable-next-line react/prop-types
                   value: options[optionName]._id
               }))
-            : options.map((option) => ({
-                  label: option.name,
-                  value: option._id
-              }));
+            : options;
 
     const handleChange = (value) => {
         onChange({ name: name, value: value });
     };
+
+    console.log(options);
 
     return (
         <div className="mb-4">
