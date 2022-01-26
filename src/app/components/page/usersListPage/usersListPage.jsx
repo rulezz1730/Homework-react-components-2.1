@@ -4,20 +4,24 @@ import React, { useState, useEffect } from "react";
 import Pagination from "../../common/pagination";
 import { paginate } from "../../../utils/paginate";
 import PropTypes from "prop-types";
-// import api from "../../../api";
 import GroupList from "../../common/groupList";
 import SearchStatus from "../../ui/searchStatus";
 import _ from "lodash";
 import UsersTable from "../../ui/usersTable";
 import SearchUsers from "../../searchUsers";
 import { useUser } from "../../../hooks/useUsers";
-import { useProfession } from "../../../hooks/useProfession";
 import { useAuth } from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import {
+    getProfessions,
+    getProfessionsStatus
+} from "../../../store/professions";
 
 const UsersListPage = () => {
     const pageSize = 6;
     const { currentUser } = useAuth();
-    const { isLoading: professionsLoading, profession } = useProfession();
+    const profession = useSelector(getProfessions());
+    const professionsLoading = useSelector(getProfessionsStatus());
     const [currentPage, setCurrenPage] = useState(1);
     const [selectedProf, setSelectedProfession] = useState();
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
@@ -64,10 +68,9 @@ const UsersListPage = () => {
         console.log(newUsers);
     };
 
-    // useEffect(() => {
-    //     console.log(`Запрос с сервера`);
-    //     api.profession.fetchAll().then((data) => setProfessions(data));
-    // }, []);
+    useEffect(() => {
+        console.log(profession);
+    }, [profession]);
 
     useEffect(() => {
         setCurrenPage(1);

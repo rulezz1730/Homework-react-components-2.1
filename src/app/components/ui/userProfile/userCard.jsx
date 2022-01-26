@@ -1,9 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useAuth } from "../../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { getProfessionById } from "../../../store/professions";
 
 const UserProfile = ({ requiredUser, editUserButton, userId }) => {
     const { currentUser } = useAuth();
+    const userProfession = useSelector(
+        getProfessionById(requiredUser.profession)
+    );
 
     return (
         <div className="card mb-3">
@@ -28,7 +33,7 @@ const UserProfile = ({ requiredUser, editUserButton, userId }) => {
                     <div className="mt-3">
                         <h4>{requiredUser.name}</h4>
                         <p className="text-secondary mb-1">
-                            {requiredUser.profession.name}
+                            {userProfession.name}
                         </p>
                         <div className="text-muted">
                             <i
