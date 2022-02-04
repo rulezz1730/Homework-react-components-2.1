@@ -3,11 +3,13 @@ import React, { useState, useEffect } from "react";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
-import { useAuth } from "../../hooks/useAuth";
 import { useHistory } from "react-router-dom/";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../store/users";
 
 const LoginForm = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const [data, setData] = useState({
         email: "",
@@ -16,7 +18,6 @@ const LoginForm = () => {
     });
     const [errors, setErrors] = useState({});
     const [enterError, setEnterError] = useState(null);
-    const { logIn } = useAuth();
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -52,22 +53,16 @@ const LoginForm = () => {
 
     const isValid = Object.keys(errors).length === 0;
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
-        try {
-            await logIn(data);
-            history.push(
-                history.location.state
-                    ? history.location.state.from.pathname
-                    : "/"
-            );
-        } catch (error) {
-            console.log(error.message);
-            setEnterError(error.message);
-        }
+
+        const redirect = history.location.state
+            ? history.location.state.from.pathname
+            : "/";
+
+        dispatch(logIn({ payload: data, redirect }));
     };
 
     return (

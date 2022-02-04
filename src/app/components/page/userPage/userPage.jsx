@@ -1,25 +1,21 @@
 import React from "react";
 import { useHistory } from "react-router";
-// import api from "../../../api";
 import PropTypes from "prop-types";
 import UserProfile from "../../ui/userProfile/userCard";
 import Comments from "../../ui/userProfile/comments";
 import QualitiesCard from "../../ui/userProfile/qualitiesCard";
 import MeetingsCard from "../../ui/userProfile/meetingsCard";
-import { useUser } from "../../../hooks/useUsers";
+import { getUserById } from "../../../store/users";
 import CommentsProvider from "../../../hooks/useComments";
+import { useSelector } from "react-redux";
 
 const UserPage = ({ userId }) => {
     const history = useHistory();
-    const { getUserById } = useUser();
-    const user = getUserById(userId);
-    // const [requiredUser, setRequiredUser] = useState();
+    const user = useSelector(getUserById(userId));
+    // const currentUser = useSelector(getCurrentUserData());
+    // console.log(currentUser);
 
-    // useEffect(() => {
-    //     api.users.getById(userId).then((data) => setRequiredUser(data));
-    // }, []);
-
-    const editUser = (userId) => {
+    const editUser = () => {
         history.push(`${history.location.pathname}edit/`);
     };
 

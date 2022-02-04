@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useAuth } from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { getProfessionById } from "../../../store/professions";
+import { getCurrentUserData } from "../../../store/users";
 
 const UserProfile = ({ requiredUser, editUserButton, userId }) => {
-    const { currentUser } = useAuth();
+    const currentUser = useSelector(getCurrentUserData());
     const userProfession = useSelector(
         getProfessionById(requiredUser.profession)
     );

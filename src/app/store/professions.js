@@ -53,10 +53,11 @@ export const getProfessions = () => (state) => state.professions.entities;
 export const getProfessionsStatus = () => (state) =>
     state.professions.isLoading;
 export const getProfessionById = (professionId) => (state) => {
-    const prof = state.professions.entities.find(
-        (prof) => prof._id === professionId
-    );
-    return prof;
+    if (state.users.entities) {
+        return state.professions.entities.find(
+            (prof) => prof._id === professionId
+        );
+    }
 };
 
 export default professionReducer;
