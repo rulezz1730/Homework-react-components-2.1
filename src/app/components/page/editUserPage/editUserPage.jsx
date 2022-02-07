@@ -5,7 +5,6 @@ import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radioField";
 import MultiSelectField from "../../common/form/multiSelectField";
 import { validator } from "../../../utils/validator";
-// import { useAuth } from "../../../hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { getQualities, getQualitiesStatus } from "../../../store/qualities";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +20,6 @@ const EditUserPage = () => {
     const [isLoading, setLoading] = useState(true);
     const [user, setUser] = useState();
     const currentUser = useSelector(getCurrentUserData());
-    // const { updateUserData } = useAuth();
     const qualities = useSelector(getQualities());
     const isQualitiesLoading = useSelector(getQualitiesStatus());
     const qualitiesList = qualities.map((q) => ({
@@ -52,7 +50,6 @@ const EditUserPage = () => {
                 qualities: user.qualities.map((q) => q.value)
             })
         );
-        history.push(`/users/${currentUser._id}/`);
     }
 
     function getQualitiesById(qualitiesIds) {

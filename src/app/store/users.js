@@ -4,6 +4,7 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 import authService from "../service/auth.service";
 import localStorageService from "../service/localStorage.service";
 import userService from "../service/user.service";
+import generateAuthError from "../utils/generateAuthError";
 import getRandomInt from "../utils/getRandomInt";
 import history from "../utils/history";
 
@@ -58,13 +59,16 @@ const usersSlice = createSlice({
             state.dataLoaded = false;
         },
         userUpdateDataSuccess: (state, action) => {
-            const updatedUserIndex = state.entities.find(
-                (user) => user._id === state.auth
+            const updatedUserIndex = state.entities.findIndex(
+                (user) => user._id === action.payload._id
             );
             state.entities[updatedUserIndex] = action.payload;
         },
         userUpdateDataFailed: (state, action) => {
             state.error = action.payload;
+        },
+        authRequested: (state) => {
+            state.error = null;
         }
     }
 });
@@ -91,14 +95,21 @@ export const logIn =
     ({ payload, redirect }) =>
     async (dispatch) => {
         const { email, password } = payload;
-        dispatch(authRequested);
+        dispatch(authRequested());
         try {
             const data = await authService.logIn({ email, password });
             dispatch(authRequestSuccess({ userId: data.localId }));
             localStorageService.setTokens(data);
             history.push(redirect);
         } catch (error) {
-            dispatch(authRequestFailed(error.message));
+            const { code, message } = error.response.data.error;
+            console.log(code, message);
+            if (code === 400) {
+                const errorMessage = generateAuthError(message);
+                dispatch(authRequestFailed(errorMessage));
+            } else {
+                dispatch(authRequestFailed(error.message));
+            }
         }
     };
 
@@ -158,11 +169,12 @@ export const loadUsersList = () => async (dispatch) => {
     }
 };
 
-export const updateUserData = (data) => async (dispatch, getState) => {
+export const updateUserData = (payload) => async (dispatch) => {
     dispatch(userUpdateDataRequested());
     try {
-        const { content } = await userService.updateCurrentUser(data);
+        const { content } = await userService.updateCurrentUser(payload);
         dispatch(userUpdateDataSuccess(content));
+        history.push(`/users/${content._id}/`);
     } catch (error) {
         dispatch(userUpdateDataFailed(error.message));
     }
@@ -186,5 +198,6 @@ export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
 export const getDataStatus = () => (state) => state.users.dataLoaded;
 export const getCurrentUserId = () => (state) => state.users.auth.userId;
 export const getUsersLoadingStatus = () => (state) => state.users.isLoading;
+export const getAuthErrors = () => (state) => state.users.error;
 
 export default usersReducer;
